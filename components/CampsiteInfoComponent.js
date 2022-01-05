@@ -33,6 +33,8 @@ const mapDispatchToProps = {
 };
 
 function RenderCampsite(props) {
+  const recognizeComment = ({ dx }) => (dx > 200 ? true : false);
+
   const { campsite } = props;
 
   const recognizeDrag = ({ dx }) => (dx < -200 ? true : false);
@@ -70,8 +72,10 @@ function RenderCampsite(props) {
           ],
           { cancelable: false }
         );
+      } else if (recognizeComment(gestureState)) {
+        props.onShowModal();
       }
-      return true; //turns on the panResponder and event handler
+      return true;
     },
   });
 
@@ -83,7 +87,7 @@ function RenderCampsite(props) {
         duration={2000}
         delay={1000}
         ref={view}
-        {...PanResponder.panHandlers} //spread out responders and combine into 1 handler and pass in as one object
+        {...panResponder.panHandlers} //spread out responders and combine into 1 handler and pass in as one object
       >
         <Card
           featuredTitle={campsite.name}
